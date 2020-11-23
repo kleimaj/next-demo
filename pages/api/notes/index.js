@@ -1,10 +1,15 @@
+import next from 'next';
 import nc from 'next-connect';
 import dbConnect from '../../../src/db/mongoose';
 import Note from '../../../src/models/Note';
 
 const handler = nc()
-  .get(async (req, res) => {
+  .use(async (req, res, next) => {
     await dbConnect();
+    next();
+  })
+  .get(async (req, res) => {
+    // await dbConnect();
     try {
       const notes = await Note.find({});
       res.status(200).json({ success: true, data: notes });
@@ -13,7 +18,7 @@ const handler = nc()
     }
   })
   .post(async (req, res) => {
-    await dbConnect();
+    // await dbConnect();
 
     try {
       const note = await Note.create(req.body);
