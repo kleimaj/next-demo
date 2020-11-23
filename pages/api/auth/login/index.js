@@ -10,8 +10,8 @@ import { withIronSession, ironSession } from 'next-iron-session';
 // const MongoStore = connectMongo(session);
 
 const session = ironSession({
-  password: 'iaintneverseentwoprettybestfriends',
-  cookieName: 'user',
+  cookieName: 'MYSITECOOKIE',
+  password: '2gyZ3GDw3LHZQKDhPmPDL3sjREVRXPr8',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production' ? true : false,
   },
@@ -65,15 +65,11 @@ const handler = nc()
             });
 
           if (isMatch) {
-            // console.log(req.session);
-            // req.session.currentUser = { id: foundUser._id, name: foundUser.name };
-            req.session.set('currentUser', {
+            await req.session.set('currentUser', {
               id: foundUser._id,
               name: foundUser.name,
             });
             await req.session.save();
-            console.log('session saved');
-            console.log(req.session.get('currentUser'));
             return res.status(200).json({
               status: 200,
               message: 'Success',

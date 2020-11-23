@@ -4,11 +4,11 @@ import User from '../../../../src/models/User';
 import dbConnect from '../../../../src/db/mongoose';
 // import session from 'express-session';
 // import connectMongo from 'connect-mongo';
-import { withIronSession, ironSession } from 'next-iron-session';
+import { ironSession } from 'next-iron-session';
 
 const session = ironSession({
-  password: 'iaintneverseentwoprettybestfriends',
-  cookieName: 'user',
+  cookieName: 'MYSITECOOKIE',
+  password: '2gyZ3GDw3LHZQKDhPmPDL3sjREVRXPr8',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production' ? true : false,
   },
@@ -47,7 +47,7 @@ const handler = nc()
     //     });
     //   res.sendStatus(200);
     // });
-    // console.log(req.session.get('currentUser'));
+    // const user = await req.session.get('currentUser');
     req.session.destroy();
     res.json({ status: 200, message: 'logged out' });
   });
