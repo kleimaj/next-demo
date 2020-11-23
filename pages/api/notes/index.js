@@ -21,6 +21,7 @@ const handler = nc()
     // await dbConnect();
 
     try {
+      console.log(req.body);
       const note = await Note.create(req.body);
       res.status(201).json({ success: true, data: note });
     } catch (error) {

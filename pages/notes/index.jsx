@@ -33,12 +33,37 @@ const NoteContainer = styled.div`
   flex-direction: column;
 `;
 
-const Page = ({ notes }) => {
+const Page = ({ allNotes }) => {
+  const [notes, setNotes] = useState(allNotes.data);
+  const [newNote, setNewNote] = useState('');
   const router = useRouter();
-  console.log(notes);
   // const notes = new Array(15)
   //   .fill(1)
   //   .map((e, i) => ({ id: i, title: `Note: ${i}` }));
+
+  const createNote = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/notes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ note: newNote }),
+    });
+    const note = await res.json();
+    if (note.success) {
+      setNotes((currNotes) => [...currNotes, note.data]);
+      setNewNote('');
+    }
+  };
+
+  const deleteNote = async (id) => {
+    const res = await fetch(`/api/notes/${id}`, {
+      method: 'DELETE',
+    });
+    const msg = await res.json();
+    setNotes(notes.filter((note) => note._id !== id));
+  };
 
   return (
     <Container>
@@ -47,8 +72,12 @@ const Page = ({ notes }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <H1>Notes</H1>
+      <form onSubmit={createNote}>
+        <input type='string' onChange={(e) => setNewNote(e.target.value)} />
+        <button type='submit'>+</button>
+      </form>
       <NoteContainer>
-        {notes.data.map((note, idx) => (
+        {notes.map((note, idx) => (
           <div
             key={note._id}
             css={css`
@@ -65,7 +94,14 @@ const Page = ({ notes }) => {
               >
                 <Note>
                   <strong>Note {idx}</strong>
-                  <button>Delete</button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      deleteNote(note._id);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </Note>
               </a>
             </Link>
@@ -84,5 +120,5 @@ export default Page;
 export async function getServerSideProps() {
   const res = await fetch('http://localhost:3000/api/notes');
   const data = await res.json();
-  return { props: { notes: data } };
+  return { props: { allNotes: data } };
 }
