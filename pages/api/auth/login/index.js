@@ -9,7 +9,7 @@ const MongoStore = connectMongo(session);
 
 const handler = nc()
   .use(async (req, res, next) => {
-    session({
+    return session({
       store: new MongoStore({ url: process.env.MONGODB_URI }),
       secret: 'iaintneverseentwoprettybestfriends',
       resave: false,
@@ -17,8 +17,8 @@ const handler = nc()
       cookie: {
         maxAge: 1000 * 60 * 60 * 24,
       },
-    });
-    next();
+    })(req, res, next);
+    // next();
   })
   .use(async (req, res, next) => {
     await dbConnect();
@@ -53,6 +53,7 @@ const handler = nc()
         if (isMatch) {
           console.log(req.session);
           req.session.currentUser = { id: foundUser._id, name: foundUser.name };
+          console.log(req.session);
           return res.status(200).json({
             status: 200,
             message: 'Success',

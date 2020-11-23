@@ -9,7 +9,7 @@ const MongoStore = connectMongo(session);
 
 const handler = nc()
   .use(async (req, res, next) => {
-    await session({
+    return session({
       store: new MongoStore({ url: process.env.MONGODB_URI }),
       secret: 'iaintneverseentwoprettybestfriends',
       resave: false,
@@ -17,14 +17,15 @@ const handler = nc()
       cookie: {
         maxAge: 1000 * 60 * 60 * 24,
       },
-    });
-    next();
+    })(req, res, next);
+    // next();
   })
   .use(async (req, res, next) => {
     await dbConnect();
     next();
   })
   .delete(async (req, res) => {
+    console.log(req.session);
     if (!req.session.currentUser)
       return res.status(401).json({
         message: 'No user to log out!',

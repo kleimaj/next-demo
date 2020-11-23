@@ -9,7 +9,7 @@ const MongoStore = connectMongo(session);
 
 const handler = nc()
   .use(async (req, res, next) => {
-    await session({
+    return session({
       store: new MongoStore({ url: process.env.MONGODB_URI }),
       secret: 'iaintneverseentwoprettybestfriends',
       resave: false,
@@ -17,9 +17,9 @@ const handler = nc()
       cookie: {
         maxAge: 1000 * 60 * 60 * 24,
       },
-    });
-    console.log('session init');
-    next();
+    })(req, res, next);
+    // console.log('session init');
+    // next();
   })
   .use(async (req, res, next) => {
     await dbConnect();
@@ -60,6 +60,7 @@ const handler = nc()
         };
         User.create(newUser, (err, savedUser) => {
           if (err) return res.status(500).json({ status: 500, message: err });
+          req.session.currentUser = { id: savedUser._id, name: savedUser.name };
           return res.status(200).json({
             status: 200,
             data: { id: savedUser._id, name: savedUser.name },
