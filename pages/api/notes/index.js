@@ -1,4 +1,3 @@
-import next from 'next';
 import nc from 'next-connect';
 import dbConnect from '../../../src/db/mongoose';
 import Note from '../../../src/models/Note';

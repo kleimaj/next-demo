@@ -2,28 +2,20 @@ import nc from 'next-connect';
 import bcrypt from 'bcrypt';
 import User from '../../../../src/models/User';
 import dbConnect from '../../../../src/db/mongoose';
-import session from 'express-session';
-import connectMongo from 'connect-mongo';
+import { ironSession } from 'next-iron-session';
 
-const MongoStore = connectMongo(session);
+const session = ironSession({
+  cookieName: 'MYSITECOOKIE',
+  password: '2gyZ3GDw3LHZQKDhPmPDL3sjREVRXPr8',
+  cookieOptions: {
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+  },
+});
 
 const handler = nc()
-  .use(async (req, res, next) => {
-    await session({
-      store: new MongoStore({ url: process.env.MONGODB_URI }),
-      secret: 'iaintneverseentwoprettybestfriends',
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24,
-      },
-    });
-    console.log('session init');
-    next();
-  })
+  .use(session)
   .use(async (req, res, next) => {
     await dbConnect();
-    console.log('DB connected');
     next();
   })
   .post(async (req, res) => {
@@ -60,6 +52,7 @@ const handler = nc()
         };
         User.create(newUser, (err, savedUser) => {
           if (err) return res.status(500).json({ status: 500, message: err });
+          req.session.currentUser = { id: savedUser._id, name: savedUser.name };
           return res.status(200).json({
             status: 200,
             data: { id: savedUser._id, name: savedUser.name },
