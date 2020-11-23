@@ -14,6 +14,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
   },
+  isAdmin: {
+    type: Boolean,
+  },
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
