@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Next App</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
@@ -18,7 +18,9 @@ export default function Home() {
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
-          <Link href='/todos'>Check out Todos</Link>
+          <Link href='/notes'>
+            <a>Check out Todos</a>
+          </Link>
         </p>
 
         <div className={styles.grid}>
@@ -65,3 +67,15 @@ export default function Home() {
     </div>
   );
 }
+
+// export function getStaticProps() {
+//   // get data from CMS
+
+//   return {
+//     props: {
+//       content: {
+//         title: 'This is my really nice app',
+//       },
+//     },
+//   };
+// }

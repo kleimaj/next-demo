@@ -5,9 +5,10 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   width: 100%;
-  maxwidth: 960px;
-  m: 0;
-  mx: auto;
+  max-width: 960px;
+  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
 `;
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,8 +19,8 @@ function MyApp({ Component, pageProps }) {
         </Link>
         <ul>
           <li>
-            <Link href='/todos'>
-              <a>Todos</a>
+            <Link href='/notes'>
+              <a>Notes</a>
             </Link>
           </li>
         </ul>
