@@ -21,6 +21,20 @@ const Page = () => {
     console.log(note);
     setNote(note.note);
   };
+  const updateNote = async () => {
+    const res = await fetch(`/api/notes/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ note }),
+    });
+    const newNote = await res.json();
+    console.log(newNote);
+    if (newNote.success) {
+      setNote(newNote.data.note);
+    }
+  };
 
   useEffect(() => {
     fetchNote();
@@ -29,7 +43,15 @@ const Page = () => {
   return (
     <Container>
       <h1>Todo {id}</h1>
-      <p>{note}</p>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateNote();
+        }}
+      >
+        <input value={note} onChange={(e) => setNote(e.target.value)} />
+        <button>Update</button>
+      </form>
     </Container>
   );
 };
