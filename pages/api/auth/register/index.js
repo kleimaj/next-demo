@@ -2,14 +2,33 @@ import nc from 'next-connect';
 import bcrypt from 'bcrypt';
 import User from '../../../../src/models/User';
 import dbConnect from '../../../../src/db/mongoose';
+import session from 'express-session';
+import connectMongo from 'connect-mongo';
+
+const MongoStore = connectMongo(session);
 
 const handler = nc()
   .use(async (req, res, next) => {
+    await session({
+      store: new MongoStore({ url: process.env.MONGODB_URI }),
+      secret: 'iaintneverseentwoprettybestfriends',
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24,
+      },
+    });
+    console.log('session init');
+    next();
+  })
+  .use(async (req, res, next) => {
     await dbConnect();
+    console.log('DB connected');
     next();
   })
   .post(async (req, res) => {
-    if (!req.body.name || req.body.email || req.body.password) {
+    // console.log(req.body);
+    if (!req.body.name || !req.body.email || !req.body.password) {
       return res.status(400).json({
         status: 400,
         message: 'Please enter a name, email, and password',
@@ -41,9 +60,11 @@ const handler = nc()
         };
         User.create(newUser, (err, savedUser) => {
           if (err) return res.status(500).json({ status: 500, message: err });
-          return res
-            .status(200)
-            .json({ status: 200, message: 'User registered' });
+          return res.status(200).json({
+            status: 200,
+            data: { id: savedUser._id, name: savedUser.name },
+            message: 'User registered',
+          });
         });
       });
     });
