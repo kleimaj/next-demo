@@ -9,6 +9,13 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const Form = styled.form`
+  padding: 8px;
+  display: flex;
+  width: 33%;
+  justify-content: center;
+  margin: 24px;
+`;
 const Page = () => {
   // console.log(notes);
   const router = useRouter();
@@ -42,8 +49,8 @@ const Page = () => {
 
   return (
     <Container>
-      <h1>Todo {id}</h1>
-      <form
+      <h1>Note _id: {id}</h1>
+      <Form
         onSubmit={(e) => {
           e.preventDefault();
           updateNote();
@@ -51,7 +58,8 @@ const Page = () => {
       >
         <input value={note} onChange={(e) => setNote(e.target.value)} />
         <button>Update</button>
-      </form>
+      </Form>
+      <button onClick={() => router.push('/notes')}>Back to All Notes</button>
     </Container>
   );
 };

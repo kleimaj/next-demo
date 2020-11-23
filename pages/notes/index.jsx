@@ -32,7 +32,13 @@ const NoteContainer = styled.div`
   justify-content: space-between;
   flex-direction: column;
 `;
-
+const Form = styled.form`
+  padding: 8px;
+  display: flex;
+  width: 33%;
+  justify-content: center;
+  margin: 24px;
+`;
 const Page = ({ allNotes }) => {
   const [notes, setNotes] = useState(allNotes.data);
   const [newNote, setNewNote] = useState('');
@@ -72,11 +78,12 @@ const Page = ({ allNotes }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <H1>Notes</H1>
-      <form onSubmit={createNote}>
-        <input type='string' onChange={(e) => setNewNote(e.target.value)} />
-        <button type='submit'>+</button>
-      </form>
+
       <NoteContainer>
+        <Form onSubmit={createNote}>
+          <input type='string' onChange={(e) => setNewNote(e.target.value)} />
+          <button type='submit'>+</button>
+        </Form>
         {notes.map((note, idx) => (
           <div
             key={note._id}
