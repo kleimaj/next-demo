@@ -14,6 +14,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
   },
+  grass: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Grass',
+  },
   isAdmin: {
     type: Boolean,
   },
