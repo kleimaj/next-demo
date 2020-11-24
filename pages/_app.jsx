@@ -2,6 +2,7 @@ import '../src/styles/globals.scss';
 import Link from 'next/link';
 import { Navbar } from '../src/components';
 import styled from '@emotion/styled';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const Container = styled.div`
   width: 100%;
