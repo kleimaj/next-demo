@@ -51,31 +51,41 @@ const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
-    fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email,
-        password
+    if (isAdmin && email !== "test@bread.com") {
+      setErrorMsg("Oops, you're not an admin. Please uncheck the box");
+    } else if (!isAdmin && email === "test@bread.com") {
+      setErrorMsg("Looks like you're an admin. Check that box below!");
+    } else {
+      setErrorMsg("");
+      fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          isAdmin
+        })
       })
-    })
-      .then(res => res.json())
-      .then(data => {
-        // send them home or to the user profile?
-        router.push("/");
-      })
-      .catch(err => console.log(err));
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          data.name === "admin" ? router.push("/admin") : router.push("/");
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   return (
     <FormWrapper>
       <Header>Log In</Header>
-
+      {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null}
       <Form onSubmit={handleSubmit}>
         <label htmlFor='email'>
           <Input
@@ -99,6 +109,17 @@ const Login = () => {
             autoComplete='create-password'
             required
           />
+        </label>
+
+        <label htmlFor='isAdmin'>
+          <Input
+            type='checkbox'
+            checked={isAdmin}
+            onChange={e => setIsAdmin(!isAdmin)}
+            name='isAdmin'
+            autoComplete='is-user-admin'
+          />
+          <p style={{ fontSize: "13px" }}>I am an admin.</p>
         </label>
         <Button type='submit'>Submit</Button>
 
