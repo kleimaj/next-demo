@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 
 export const Navbar = styled.nav`
   // CSS
-  background-color: #3e51ff;
+  background: #73b899;
+
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   color: #ffdba9;
   padding-left: 1rem;
@@ -21,7 +22,10 @@ export const Navbar = styled.nav`
   a {
     color: white;
     text-decoration: none;
-    font-size: 1.75rem;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: 'Poppins';
   }
 
   ul {
