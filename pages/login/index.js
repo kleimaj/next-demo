@@ -3,6 +3,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+//* test admin credentials:
+/* {
+  "id": "5fbcacaceff46eec5243b11b",
+  "name": "admin",
+  "email": "test@bread.com",
+  "password": "admin1",
+  "isAdmin": true
+} */
+
 const FormWrapper = styled.div`
   position: absolute;
   top: 15%;
@@ -75,7 +84,7 @@ const Login = () => {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          // console.log(data);
           data.name === "admin" ? router.push("/admin") : router.push("/");
         })
         .catch(err => console.log(err));
