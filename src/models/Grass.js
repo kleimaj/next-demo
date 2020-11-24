@@ -14,6 +14,9 @@ const GrassSchema = new mongoose.Schema({
   season: {
     type: String,
   },
+  vernation: {
+    type: String,
+  },
   tipShape: {
     type: String,
   },
