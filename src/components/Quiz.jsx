@@ -28,7 +28,8 @@ const quiz = [
   {
     question: 'VERNATION',
     name: 'vernation',
-    answers: ['rolled', 'folded'],
+    src: ['/grass/folded.png', '/grass/rolled.png'],
+    type: 'image',
     values: ['rolled', 'folded'],
   },
   {
