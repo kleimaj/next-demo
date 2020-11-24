@@ -47,26 +47,6 @@ const fetcher = query => request('http:localhost:3000/api/graphql', query)
 
 
 const Page = () => {
-  /*
-  const { data, error } = useSWR(
-    `
-      query GetNotes{
-        getNotes {
-          id
-          note
-        }
-      }
-    }`,
-    fetcher
-  )
-  // ...
-  if (error) {
-    console.log(error)
-    return 'err'
-  }
-  if (!data) return 'loading'
-  if (data) console.log(data)
-  */
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const router = useRouter();
