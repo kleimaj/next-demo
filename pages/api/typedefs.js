@@ -17,6 +17,13 @@ const typeDefs = gql`
     note:String
   }
 
+  type User {
+    id:ID!
+    name:String
+    email:String
+    grass:[Grass]
+  }
+
   input GrassInput {
     name:String
     color:String
@@ -40,6 +47,7 @@ const typeDefs = gql`
     getNotes: [Note]
     getSpecificGrass(input:GrassSearch): Grass
     getGrasses(input:GrassSearch): [Grass]
+    getUsers: [User]
   }
   type Mutation {
     makeGrass(input:GrassInput): Grass

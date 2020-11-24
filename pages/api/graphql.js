@@ -29,6 +29,10 @@ const resolvers = {
       const grasses = await Grass.find({ ...input }).exec()
       return grasses
     }
+    async getAllUsers(_, __, __) P
+      await dbConnect()
+      const allUsers = await User.find({})
+      return allUsers
   },
   Mutation: {
     async makeGrass(parent, {input}, context) {

@@ -20,16 +20,32 @@ export default function Home() {
   const getResult = async () => {
     if (Object.keys(values).length === 6) {
       setLoading(true);
-      const res = await fetch('/api/identify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-      const { grass } = await res.json();
-      console.log(grass);
-      console.log(!grass);
+    const query = `
+    {
+      getSpecificGrass(input: {
+          season: ${JSON.stringify(values.season)},
+          color: ${JSON.stringify(values.color)},
+          vernation: ${JSON.stringify(values.vernation)},
+          tipShape: ${JSON.stringify(values.tipShape)},
+          bladeWidth: ${JSON.stringify(values.bladeWidth)},
+          growthHabit: ${JSON.stringify(values.growthHabit)}
+        }
+      ){
+        name
+        images
+        color
+        id
+      }
+    }`;
+    const url = "http://localhost:3000/api/graphql";
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({query})
+    };
+    const res = await fetch(url, opts)
+    let {data} = await res.json()
+    let grass = data.getSpecificGrass
       if (grass !== null) {
         setGrass(grass);
       }
