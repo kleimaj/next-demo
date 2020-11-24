@@ -11,7 +11,7 @@ export const Navbar = styled.nav`
   height: 50px;
   display: flex;
   flex-direction: row;
-  position: fixed;
+  // position: fixed;
   top: 0;
   left: 0;
   align-items: center;
