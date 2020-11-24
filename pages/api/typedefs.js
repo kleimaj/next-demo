@@ -23,6 +23,10 @@ const typeDefs = gql`
     email:String
     grass:[Grass]
   }
+  input AssociationInput {
+    userId:ID
+    grassId:ID
+  }
 
   input GrassInput {
     name:String
@@ -47,10 +51,11 @@ const typeDefs = gql`
     getNotes: [Note]
     getSpecificGrass(input:GrassSearch): Grass
     getGrasses(input:GrassSearch): [Grass]
-    getUsers: [User]
+    getAllUsers: [User]
   }
   type Mutation {
     makeGrass(input:GrassInput): Grass
+    makeAssociation(input:AssociationInput): User
   }
 `
 

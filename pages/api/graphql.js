@@ -2,6 +2,7 @@
 import dbConnect from '../../src/db/mongoose'
 import Note from '../../src/models/Note'
 import Grass from '../../src/models/Grass'
+import User  from '../../src/models/User'
 import { ApolloServer, gql } from 'apollo-server-micro'
 import { makeExecutableSchema } from 'graphql-tools'
 
@@ -28,17 +29,26 @@ const resolvers = {
       await dbConnect()
       const grasses = await Grass.find({ ...input }).exec()
       return grasses
-    }
-    async getAllUsers(_, __, __) P
+    },
+    async getAllUsers(_, __, ___) {
       await dbConnect()
-      const allUsers = await User.find({})
+      const allUsers = await User.find({}).populate('grass')
+      console.log(allUsers)
       return allUsers
+    },
   },
   Mutation: {
     async makeGrass(parent, {input}, context) {
       await dbConnect()
       const grass = await Grass.create({ ...input})
       return grass
+    },
+    async makeAssociation(parent, {input}, context) {
+      await dbConnect()
+      const foundUser= await User.findOne(input.userId).populate
+      await foundUser.grass.push(input.grassId)
+      await foundUser.save()
+      return foundUser
     },
   },
 }
