@@ -17,8 +17,17 @@ const typeDefs = gql`
     bladeWidth: String
     growthHabit: String
   }
+
   input GrassInput {
     name:String
+    color:String
+    season:String
+    vernation:String
+    tipShape:String
+    bladeWidth:String
+    growthHabit:String
+  }
+  input GrassSearch {
     color:String
     season:String
     vernation:String
@@ -30,6 +39,7 @@ const typeDefs = gql`
   type Query {
     sayHello: String
     getNotes:String
+    getSpecificGrass(input:GrassSearch): Grass
   }
   type Mutation {
     makeGrass(input:GrassInput): Grass
@@ -46,6 +56,11 @@ const resolvers = {
       const Notes = await(Note.find({}))
       return 'hey there'
     },
+    async getSpecificGrass(_, {input}, __) {
+      await dbConnect()
+      const grass = await Grass.findOne({ ...input }).exec()
+      return grass
+    }
   },
   Mutation: {
     async makeGrass(parent, {input}, context) {
