@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PrimaryButton } from './Buttons';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
@@ -89,8 +90,7 @@ const quiz = [
     values: ['bunching', 'spreading'],
   },
 ];
-export default function Quiz() {
-  const [values, setValues] = useState({});
+export default function Quiz({ values, setValues }) {
   const [buttonsActive, setButtonsActive] = useState({});
   return (
     <>
@@ -151,7 +151,7 @@ export default function Quiz() {
           </Question>
         );
       })}
-      <button>Identify</button>
+      <PrimaryButton>Identify</PrimaryButton>
     </>
   );
 }
