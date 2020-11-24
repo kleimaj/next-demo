@@ -60,7 +60,7 @@ const Page = () => {
           note
         }
     }`;
-    const url = 'https://otherside-collab.vercel.app/api/graphql';
+    const url = '/api/graphql';
     const opts = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
