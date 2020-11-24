@@ -6,9 +6,23 @@ import Quiz from '../src/components/Quiz';
 
 export default function Home() {
   const [values, setValues] = useState({});
+  const [grass, setGrass] = useState({});
 
-  const getResult = () => {
-    if (Object.keys(values) === 6) {
+  const getResult = async () => {
+    if (Object.keys(values).length === 6) {
+      const res = await fetch('/api/identify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      const { grass } = await res.json();
+      console.log(grass);
+      console.log(!grass);
+      if (grass !== null) {
+        setGrass(grass);
+      }
     } else {
       alert('Please fill out all fields');
     }
@@ -16,7 +30,11 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Quiz values={values} setValues={setValues} getResult={getResult} />
+      {Object.keys(grass).length ? (
+        <h1>{grass.name}</h1>
+      ) : (
+        <Quiz values={values} setValues={setValues} getResult={getResult} />
+      )}
     </div>
   );
 }

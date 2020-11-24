@@ -40,14 +40,14 @@ const quiz = [
     ], //in public
     width: '130',
     height: '145.48',
-    values: ['lightgreen', 'mediumgreen', 'darkgreen', 'bluegreen'],
+    values: ['light green', 'medium green', 'dark green', 'blue green'],
   },
   {
     question: 'Does your grass grow in the summer?',
     type: 'radio',
     name: 'season',
     answers: ['Yes, I always have to mow it!', 'No, my mower gets a break'],
-    values: ['warm', 'cool'],
+    values: ['Warm', 'Cool'],
   },
   {
     question: 'How are grass blades arranged?',
@@ -67,7 +67,7 @@ const quiz = [
     width: '137',
     height: '145',
     labels: ['Boat Shaped', 'Pointed Tip'],
-    values: ['boat shaped', 'pointed tip'],
+    values: ['boat shaped', 'sharp pointed'],
   },
   {
     question: 'What is the blade width?',
@@ -90,7 +90,7 @@ const quiz = [
     values: ['bunching', 'spreading'],
   },
 ];
-export default function Quiz({ values, setValues }) {
+export default function Quiz({ values, setValues, getResult }) {
   const [buttonsActive, setButtonsActive] = useState({});
   return (
     <>
@@ -151,7 +151,7 @@ export default function Quiz({ values, setValues }) {
           </Question>
         );
       })}
-      <PrimaryButton>Identify</PrimaryButton>
+      <PrimaryButton onClick={() => getResult()}>Identify</PrimaryButton>
     </>
   );
 }
