@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PrimaryButton } from './Buttons';
+import { Card, CardHeader, CardContainer } from './Card';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
@@ -9,27 +10,55 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Question = styled.div`
-  background: #efefef;
-  border-radius: 12px;
-  padding: 12px 24px;
-  margin: 15px;
+const QuizHeader = styled.h1`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 54px;
+  text-align: center;
+  color: white;
+  background: #36847f;
+  width: 100vw;
+  padding: 12px;
 `;
-const ButtonContainer = styled.div`
-  display: flex;
+const QuizSubheader = styled.p`
+  font-family: PT Serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 21px;
+
+  /* 70% Black */
+
+  color: #4d4d4d;
 `;
+
 const ImgButton = styled.button`
   background: none;
   border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 8px;
 
   ${(props) => (props.active ? `border: 2px solid goldenrod;` : '')}
+
+  @media screen and (max-width: 321px) {
+    img {
+      max-width: ${(props) => props.width}px;
+      max-height: ${(props) => props.height}px;
+    }
+  }
 `;
-const ImgLabel = styled.label`
+const Label = styled.label`
   display: inline;
+  color: #4d4d4d;
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
 `;
 
 const quiz = [
@@ -44,8 +73,8 @@ const quiz = [
       '/grass/darkgreen.png',
       '/grass/bluegreen.png',
     ], //in public
-    width: '130',
-    height: '145.48',
+    width: '135',
+    height: '145',
     values: ['light green', 'medium green', 'dark green', 'blue green'],
   },
   {
@@ -100,19 +129,20 @@ export default function Quiz({ values, setValues, getResult }) {
   const [buttonsActive, setButtonsActive] = useState({});
   return (
     <Container>
-      <h2>Identify your grass</h2>
-      <p>Answer 5 questions, watch the match</p>
+      <QuizHeader>Identify your grass</QuizHeader>
       {quiz.map((q, idx) => {
         return (
-          <Question>
-            <h3>
+          <Card>
+            <CardHeader>
               {idx + 1}. {q.question}
-            </h3>
-            <ButtonContainer>
+            </CardHeader>
+            <CardContainer>
               {q.type === 'image'
                 ? q.src.map((src, i) => {
                     return (
                       <ImgButton
+                        width={q.width}
+                        height={q.height}
                         active={buttonsActive[q.name] === i}
                         onClick={() => {
                           setValues({
@@ -130,8 +160,9 @@ export default function Quiz({ values, setValues, getResult }) {
                           src={src}
                           width={q.width}
                           height={q.height}
+                          layout='intrinsic'
                         />
-                        <ImgLabel>{q.labels[i]}</ImgLabel>
+                        <Label>{q.labels[i]}</Label>
                       </ImgButton>
                     );
                   })
@@ -149,12 +180,12 @@ export default function Quiz({ values, setValues, getResult }) {
                             })
                           }
                         />
-                        <label>{q.answers[i]}</label>
+                        <Label>{q.answers[i]}</Label>
                       </>
                     );
                   })}
-            </ButtonContainer>
-          </Question>
+            </CardContainer>
+          </Card>
         );
       })}
       <PrimaryButton onClick={() => getResult()}>Identify</PrimaryButton>

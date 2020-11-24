@@ -19,15 +19,20 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>🌱</title>
         <link rel='icon' href='/favicon.ico' />
+        <link rel='preconnect' href='https://fonts.gstatic.com' />
+        <link
+          href='https://fonts.googleapis.com/css2?family=PT+Serif&family=Poppins:ital,wght@0,400;0,700;1,300;1,400&display=swap'
+          rel='stylesheet'
+        />
       </Head>
       <Navbar>
         <Link href='/'>
-          <a>Home</a>
+          <a></a>
         </Link>
         <ul>
           <li>
-            <Link href='/notes'>
-              <a>Notes</a>
+            <Link href='/login'>
+              <a>Login</a>
             </Link>
           </li>
         </ul>
