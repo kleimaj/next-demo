@@ -5,46 +5,7 @@ import Grass from '../../src/models/Grass'
 import { ApolloServer, gql } from 'apollo-server-micro'
 import { makeExecutableSchema } from 'graphql-tools'
 
-const typeDefs = gql`
-  type Grass {
-    id: ID!
-    name: String!
-    images: [String]
-    color: String
-    season: String
-    vernation: String
-    tipShape: String
-    bladeWidth: String
-    growthHabit: String
-  }
-
-  input GrassInput {
-    name:String
-    color:String
-    season:String
-    vernation:String
-    tipShape:String
-    bladeWidth:String
-    growthHabit:String
-  }
-  input GrassSearch {
-    color:String
-    season:String
-    vernation:String
-    tipShape:String
-    bladeWidth:String
-    growthHabit:String
-  }
-     
-  type Query {
-    sayHello: String
-    getNotes:String
-    getSpecificGrass(input:GrassSearch): Grass
-  }
-  type Mutation {
-    makeGrass(input:GrassInput): Grass
-  }
-`
+import typeDefs from './typedefs'
 
 const resolvers = {
   Query: {
@@ -53,13 +14,20 @@ const resolvers = {
     },
     async getNotes(parent, args, context) {
       await dbConnect()
-      const Notes = await(Note.find({}))
-      return 'hey there'
+      const notes = await(Note.find({}))
+      console.log('***********************')
+      await console.log(notes)
+      return notes
     },
     async getSpecificGrass(_, {input}, __) {
       await dbConnect()
       const grass = await Grass.findOne({ ...input }).exec()
       return grass
+    },
+    async getGrasses(_, {input}, __) {
+      await dbConnect()
+      const grasses = await Grass.find({ ...input }).exec()
+      return grasses
     }
   },
   Mutation: {
@@ -76,6 +44,7 @@ export const config = {
     bodyParser: false,
   },
 }
+
 
 
 const schema = makeExecutableSchema({
