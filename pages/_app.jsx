@@ -1,4 +1,5 @@
 import '../src/styles/globals.scss';
+import Head from 'next/head';
 import Link from 'next/link';
 import { Navbar } from '../src/components';
 import styled from '@emotion/styled';
@@ -15,6 +16,10 @@ const Container = styled.div`
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <title>🌱</title>
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
       <Navbar>
         <Link href='/'>
           <a>Home</a>
