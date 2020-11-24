@@ -1,8 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import next from "next";
-import { match } from "assert";
 
 const FormWrapper = styled.div`
   position: absolute;
@@ -56,15 +54,7 @@ const Signup = () => {
   const [password2, setPassword2] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // const matchPasswords = ({ password, password2 }) => {
-  //   console.log("hi");
-  //   if (password !== password2) {
-  //     setErrorMsg("Your passwords don't match. Please try again");
-  //   }
-  // };
-
   const handleSubmit = e => {
-    console.log("entering submit");
     e.preventDefault();
 
     // checking if passwords match
@@ -85,8 +75,7 @@ const Signup = () => {
       })
         .then(res => res.json())
         .then(data => {
-          // console.log("********", data);
-          // send them home or to the user profile?
+          //* send them home or to the user profile?
           router.push("/");
         })
         .catch(err => console.log(err));
