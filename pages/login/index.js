@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { SecondaryButton } from "../../src/components/Buttons";
 
 //* test admin credentials:
 /* {
@@ -16,6 +17,10 @@ const FormWrapper = styled.div`
   position: absolute;
   top: 15%;
   left: 25%;
+  p {
+    text-align: center;
+    color: red;
+  }
 `;
 const Header = styled.h3`
   font-size: 2rem;
@@ -26,7 +31,7 @@ const Form = styled.form`
   width: 50vw;
   height: 50vh;
   padding: 20px;
-  background-color: #ffa41b;
+  background-color: #73b899;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   display: flex;
@@ -84,7 +89,10 @@ const Login = () => {
       })
         .then(res => res.json())
         .then(data => {
-          // console.log(data);
+          console.log(data);
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("id", data.id);
+
           data.name === "admin" ? router.push("/admin") : router.push("/");
         })
         .catch(err => console.log(err));
@@ -94,7 +102,7 @@ const Login = () => {
   return (
     <FormWrapper>
       <Header>Log In</Header>
-      {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null}
+      {errorMsg ? <p>{errorMsg}</p> : null}
       <Form onSubmit={handleSubmit}>
         <label htmlFor='email'>
           <Input

@@ -16,7 +16,8 @@ const Form = styled.form`
   width: 50vw;
   height: 50vh;
   padding: 20px;
-  background-color: #ffa41b;
+  /* background-color: #ffa41b; */
+  background-color: #73b899;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   display: flex;
