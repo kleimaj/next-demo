@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/react';
@@ -39,13 +39,61 @@ const Form = styled.form`
   justify-content: center;
   margin: 24px;
 `;
-const Page = ({ allNotes }) => {
-  const [notes, setNotes] = useState(allNotes.data);
+
+
+import useSWR from 'swr'
+import { request } from 'graphql-request'
+const fetcher = query => request('http:localhost:3000/api/graphql', query)
+
+
+const Page = () => {
+  /*
+  const { data, error } = useSWR(
+    `
+      query GetNotes{
+        getNotes {
+          id
+          note
+        }
+      }
+    }`,
+    fetcher
+  )
+  // ...
+  if (error) {
+    console.log(error)
+    return 'err'
+  }
+  if (!data) return 'loading'
+  if (data) console.log(data)
+  */
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const router = useRouter();
   // const notes = new Array(15)
   //   .fill(1)
   //   .map((e, i) => ({ id: i, title: `Note: ${i}` }));
+  useEffect(()=> {
+    //fetch graphql endpoint
+    const query = `
+    {
+        getNotes {
+          id
+          note
+        }
+    }`;
+    const url = "http://localhost:3000/api/graphql";
+    const opts = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query })
+    };
+    fetch(url, opts)
+      .then(res => res.json())
+      .then(data=> setNotes(data.data.getNotes))
+      .catch(console.error);
+
+  }, [])
 
   const createNote = async (e) => {
     e.preventDefault();
@@ -129,3 +177,5 @@ export async function getServerSideProps() {
   const data = await res.json();
   return { props: { allNotes: data } };
 }
+
+
