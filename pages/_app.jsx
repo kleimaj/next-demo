@@ -9,7 +9,7 @@ const Container = styled.div`
   margin: 0;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 4rem;
+  margin-top: 1rem;
 `;
 function MyApp({ Component, pageProps }) {
   return (

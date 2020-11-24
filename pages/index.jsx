@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import styles from '../src/styles/Home.module.scss';
 import Quiz from '../src/components/Quiz';
+import GrassShow from '../src/components/GrassShow';
 
 export default function Home() {
   const [values, setValues] = useState({});
@@ -31,7 +32,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       {Object.keys(grass).length ? (
-        <h1>{grass.name}</h1>
+        <GrassShow grass={grass} />
       ) : (
         <Quiz values={values} setValues={setValues} getResult={getResult} />
       )}

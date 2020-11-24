@@ -3,6 +3,12 @@ import { PrimaryButton } from './Buttons';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
 const Question = styled.div`
   background: #efefef;
   border-radius: 12px;
@@ -93,7 +99,7 @@ const quiz = [
 export default function Quiz({ values, setValues, getResult }) {
   const [buttonsActive, setButtonsActive] = useState({});
   return (
-    <>
+    <Container>
       <h2>Identify your grass</h2>
       <p>Answer 5 questions, watch the match</p>
       {quiz.map((q, idx) => {
@@ -152,6 +158,6 @@ export default function Quiz({ values, setValues, getResult }) {
         );
       })}
       <PrimaryButton onClick={() => getResult()}>Identify</PrimaryButton>
-    </>
+    </Container>
   );
 }
