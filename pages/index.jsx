@@ -37,7 +37,7 @@ export default function Home() {
         id
       }
     }`;
-      const url = 'http://localhost:3000/api/graphql';
+      const url = 'https://otherside-collab.vercel.app/api/graphql';
       const opts = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
