@@ -1,8 +1,16 @@
 import styled from "@emotion/styled";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import next from "next";
-import { match } from "assert";
+import Link from "next/link";
+
+//* test admin credentials:
+/* {
+  "id": "5fbcacaceff46eec5243b11b",
+  "name": "admin",
+  "email": "test@bread.com",
+  "password": "admin1",
+  "isAdmin": true
+} */
 
 const FormWrapper = styled.div`
   position: absolute;
@@ -41,53 +49,43 @@ const Button = styled.button`
   border: none;
   background-color: #000;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 30px;
   padding: 5px 15px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
   color: #fff;
   font-size: 1rem;
 `;
 
-const Signup = () => {
+const Login = () => {
   const router = useRouter();
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // const matchPasswords = ({ password, password2 }) => {
-  //   console.log("hi");
-  //   if (password !== password2) {
-  //     setErrorMsg("Your passwords don't match. Please try again");
-  //   }
-  // };
-
   const handleSubmit = e => {
-    console.log("entering submit");
     e.preventDefault();
-
-    // checking if passwords match
-    if (password !== password2) {
-      setErrorMsg("Your passwords don't match. Please try again");
+    if (isAdmin && email !== "test@bread.com") {
+      setErrorMsg("Oops, you're not an admin. Please uncheck the box");
+    } else if (!isAdmin && email === "test@bread.com") {
+      setErrorMsg("Looks like you're an admin. Check that box below!");
     } else {
       setErrorMsg("");
-      fetch("/api/auth/register", {
+      fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name,
           email,
-          password
+          password,
+          isAdmin
         })
       })
         .then(res => res.json())
         .then(data => {
-          // console.log("********", data);
-          // send them home or to the user profile?
-          router.push("/");
+          // console.log(data);
+          data.name === "admin" ? router.push("/admin") : router.push("/");
         })
         .catch(err => console.log(err));
     }
@@ -95,21 +93,9 @@ const Signup = () => {
 
   return (
     <FormWrapper>
-      <Header>Sign Up</Header>
+      <Header>Log In</Header>
       {errorMsg ? <p style={{ color: "red" }}>{errorMsg}</p> : null}
       <Form onSubmit={handleSubmit}>
-        <label htmlFor='name'>
-          <Input
-            placeholder='Name'
-            value={name}
-            onChange={e => setName(e.target.value)}
-            name='name'
-            type='text'
-            autoComplete='name'
-            required
-          />
-        </label>
-
         <label htmlFor='email'>
           <Input
             placeholder='Email address'
@@ -124,7 +110,7 @@ const Signup = () => {
 
         <label htmlFor='password'>
           <Input
-            placeholder='Create a password'
+            placeholder='Magic password'
             value={password}
             onChange={e => setPassword(e.target.value)}
             name='password'
@@ -134,22 +120,30 @@ const Signup = () => {
           />
         </label>
 
-        <label htmlFor='password2'>
+        <label htmlFor='isAdmin'>
           <Input
-            placeholder='Confirm password'
-            value={password2}
-            onChange={e => setPassword2(e.target.value)}
-            name='password2'
-            type='password'
-            autoComplete='confirm-password'
-            required
+            type='checkbox'
+            checked={isAdmin}
+            onChange={e => setIsAdmin(!isAdmin)}
+            name='isAdmin'
+            autoComplete='is-user-admin'
           />
+          <p style={{ fontSize: "13px" }}>I am an admin.</p>
         </label>
-
         <Button type='submit'>Submit</Button>
+
+        <h5>
+          Don't have an account?
+          <Link href='/signup'>
+            <a style={{ color: "yellow", textDecoration: "underline" }}>
+              {" "}
+              Sign up here!
+            </a>
+          </Link>
+        </h5>
       </Form>
     </FormWrapper>
   );
 };
 
-export default Signup;
+export default Login;
