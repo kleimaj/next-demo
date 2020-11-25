@@ -16,8 +16,6 @@ const resolvers = {
     async getNotes(parent, args, context) {
       await dbConnect()
       const notes = await(Note.find({}))
-      console.log('***********************')
-      await console.log(notes)
       return notes
     },
     async getSpecificGrass(_, {input}, __) {
@@ -32,7 +30,7 @@ const resolvers = {
     },
     async getAllUsers(_, __, ___) {
       await dbConnect()
-      const allUsers = await User.find({}).populate('grass')
+      const allUsers = await User.find({}).populate('Grass')
       console.log(allUsers)
       return allUsers
     },
@@ -46,14 +44,19 @@ const resolvers = {
     async makeAssociation(parent, {input}, context) {
       await dbConnect()
       const foundUser= await User.findOne({ _id: input.userId})
-      let popUser = await foundUser.populate('grass')
+      let popUser = await foundUser.populate('Grass')
       await popUser.grass.push(input.grassId)
       await popUser.save()
-      console.log('***********************')
-      console.log(popUser)
-      console.log(popUser.grass)
-      console.log('***********************')
       return popUser
+    },
+  },
+  User: {
+    grass: async(parent, {input}, context)=> {
+      await dbConnect()
+      //find all grass with any of the id's of the parent User._id
+      console.log(parent.grass)
+      const grasses = await Grass.find({_id: {$in: parent.grass}})
+      return grasses
     },
   },
 }
