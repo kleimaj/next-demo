@@ -20,7 +20,7 @@ export default function Home() {
   const getResult = async () => {
     if (Object.keys(values).length === 6) {
       setLoading(true);
-    const query = `
+      const query = `
     {
       getSpecificGrass(input: {
           season: ${JSON.stringify(values.season)},
@@ -37,15 +37,16 @@ export default function Home() {
         id
       }
     }`;
-    const url = "http://localhost:3000/api/graphql";
-    const opts = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({query})
-    };
-    const res = await fetch(url, opts)
-    let {data} = await res.json()
-    let grass = data.getSpecificGrass
+      const url = '/api/graphql';
+      const opts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      };
+      const res = await fetch(url, opts);
+      let { data } = await res.json();
+      let grass = data.getSpecificGrass;
+      localStorage.setItem('grassId', grass.id);
       if (grass !== null) {
         setGrass(grass);
       }

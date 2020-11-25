@@ -6,7 +6,7 @@ export const CardHeader = styled.h3`
   font-weight: 500;
   font-size: 24px;
   border-radius: 8px 8px 0 0;
-  background: #73b899;
+  background: ${(props) => (props.darker ? `#36847F` : `#73b899`)};
   color: white;
   margin: 0;
   padding: 12px;
@@ -14,12 +14,13 @@ export const CardHeader = styled.h3`
 export const CardContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: ${(props) => (props.column ? `column` : `row`)};
   padding: 25px;
 `;
 
 export const Card = styled.div`
-  border: 3px solid #73b899;
+  border: 3px solid ${(props) => (props.darker ? `#36847F` : `#73b899`)};
   width: 300px;
   border-radius: 12px;
   // padding: 12px 24px;

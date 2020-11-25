@@ -40,11 +40,9 @@ const Form = styled.form`
   margin: 24px;
 `;
 
-
-import useSWR from 'swr'
-import { request } from 'graphql-request'
-const fetcher = query => request('http:localhost:3000/api/graphql', query)
-
+import useSWR from 'swr';
+import { request } from 'graphql-request';
+const fetcher = (query) => request('http:localhost:3000/api/graphql', query);
 
 const Page = () => {
   const [notes, setNotes] = useState([]);
@@ -53,7 +51,7 @@ const Page = () => {
   // const notes = new Array(15)
   //   .fill(1)
   //   .map((e, i) => ({ id: i, title: `Note: ${i}` }));
-  useEffect(()=> {
+  useEffect(() => {
     //fetch graphql endpoint
     const query = `
     {
@@ -62,18 +60,17 @@ const Page = () => {
           note
         }
     }`;
-    const url = "http://localhost:3000/api/graphql";
+    const url = '/api/graphql';
     const opts = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
     };
     fetch(url, opts)
-      .then(res => res.json())
-      .then(data=> setNotes(data.data.getNotes))
+      .then((res) => res.json())
+      .then((data) => setNotes(data.data.getNotes))
       .catch(console.error);
-
-  }, [])
+  }, []);
 
   const createNote = async (e) => {
     e.preventDefault();
@@ -157,5 +154,3 @@ export async function getServerSideProps() {
   const data = await res.json();
   return { props: { allNotes: data } };
 }
-
-
