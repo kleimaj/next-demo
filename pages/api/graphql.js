@@ -45,10 +45,15 @@ const resolvers = {
     },
     async makeAssociation(parent, {input}, context) {
       await dbConnect()
-      const foundUser= await User.findOne(input.userId).populate
-      await foundUser.grass.push(input.grassId)
-      await foundUser.save()
-      return foundUser
+      const foundUser= await User.findOne({ _id: input.userId})
+      let popUser = await foundUser.populate('grass')
+      await popUser.grass.push(input.grassId)
+      await popUser.save()
+      console.log('***********************')
+      console.log(popUser)
+      console.log(popUser.grass)
+      console.log('***********************')
+      return popUser
     },
   },
 }
